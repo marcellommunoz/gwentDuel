@@ -9,6 +9,7 @@ struct unit{
 double maxDuelGwent(struct unit x, int terminal);
 int duelGwent(struct unit x, struct unit y, int terminal);
 
+//shows the bigger unit that can be killed. currently on 1 to 100000 is a unit that is 1.618034 bigger than yours.
 int main(){
 
     struct unit x;
@@ -38,6 +39,7 @@ int main(){
     return 0;
 }
 
+//calculates the unit with the most power that an UNIT X can kill.
 double maxDuelGwent(struct unit x, int terminal){
     struct unit y;
     int terminalDuel = 0;
@@ -58,7 +60,7 @@ double maxDuelGwent(struct unit x, int terminal){
     double result = (a/b);
     return result;
 }
-
+//it is a function that returns an int that is 0 if unit X wins the duel and Y if unit Y wins the duel. if the terminal is 0 the steps are hidden, if it is 1 the terminal logs each step of the duel.
 int duelGwent(struct unit x, struct unit y, int terminal){
     int hits = 0;
     if(terminal == 1){
