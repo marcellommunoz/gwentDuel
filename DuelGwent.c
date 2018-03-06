@@ -4,61 +4,107 @@
 struct unit{
     char cod;
     int dmg;
-    int danoTotal;
 };
 
+double maxDuelGwent(struct unit x, int terminal);
+int duelGwent(struct unit x, struct unit y, int terminal);
+
 int main(){
-    struct unit x, y;
+
+    struct unit x;
+    x.cod = 'X';
+    //x.dmg = 10;
+    //struct unit y;
+    //y.cod = 'Y';
+    //y.dmg = 5;
     printf("\t----CALCULATION OF DUEL IN GWENT----\n");
-    x.cod = 'A';
-    printf("UNIT A:\n");
-    scanf("%d", &(x.dmg));
-    maxDuelGwent(x);
+    double maxValue, result;
+    maxValue = 0;
+    int i;
+    for(i = 1; i< 100000; i++){
+        x.dmg = i;
+        printf("UNIT %c: %d\n", x.cod, x.dmg);
+        result = maxDuelGwent(x, 0);
+        printf("%f\n", result);
+        if(maxValue < result){
+            maxValue = result;
+        }
+    }
+
+    //printf("UNIT %c: %d\n", y.cod, y.dmg);
+    //result = maxDuelGwent(x, 1);
+    //result = duelGwent(x, y, 1);
+    printf("\t---RESULT---\nMOST VALUE: %f", maxValue);
     return 0;
 }
 
-void maxDuelGwent(struct unit x){
+double maxDuelGwent(struct unit x, int terminal){
     struct unit y;
+    int terminalDuel = 0;
     y.cod = 'Y';
     y.dmg = x.dmg;
-    while(duelGwent(x, y) == 0){
+    if(terminal == 2){
+        terminalDuel = 1;
+    }
+    while(duelGwent(x, y, terminal) == 0){
         y.dmg++;
     }
-    printf("\n\nUNIT WON WITH MOST POWER %d\n\n", y.dmg-1);
+    if(terminal == 2){
+        printf("\n\nUNIT WON WITH MOST POWER %d\n\n", y.dmg-1);
+    }
+    double a, b;
+    a = y.dmg-1;
+    b = x.dmg;
+    double result = (a/b);
+    return result;
 }
 
-int duelGwent(struct unit x, struct unit y){
+int duelGwent(struct unit x, struct unit y, int terminal){
     int hits = 0;
-    printf("\n\t----UNIT BEFORE DUEL----\n");
-    printf("%c - %d\n%c - %d\n", x.cod, x.dmg, y.cod, y.dmg);
-    printf("\n\t----LOG----\n");
+    if(terminal == 1){
+        printf("\n\t----UNIT BEFORE DUEL----\n");
+        printf("%c - %d\n%c - %d\n", x.cod, x.dmg, y.cod, y.dmg);
+        printf("\n\t----LOG----\n");
+    }
     while(x.dmg > 0 && y.dmg > 0){
-        printf("\n\t--ROUND %d--\n", hits+1);
-        printf("unit %c hits %c\n", x.cod, y.cod);
+        if(terminal == 1){
+            printf("\n\t--ROUND %d--\n", hits+1);
+            printf("unit %c hits %c\n", x.cod, y.cod);
+        }
         y.dmg = y.dmg - x.dmg;
         if(y.dmg > 0){
-            printf("survives with %d\n", y.dmg);
-            printf("unit %c hits %c\n", y.cod, x.cod);
+            if(terminal == 1){
+                printf("survives with %d\n", y.dmg);
+                printf("unit %c hits %c\n", y.cod, x.cod);
+            }
             x.dmg = x.dmg - y.dmg;
-            if(x.dmg > 0){
+            if(x.dmg > 0 && terminal == 1){
                 printf("survives with %d\n", x.dmg);
             }
-            else{
+            else if(terminal == 1){
                 printf("unit %c dies\n", x.cod);
             }
-        }else{
+        }else if (terminal == 1){
             printf("unit %c dies\n", y.cod);
         }
-        printf("%c - %d\n%c - %d\n", x.cod, x.dmg, y.cod, y.dmg);
+        if (terminal == 1){
+            printf("%c - %d\n%c - %d\n", x.cod, x.dmg, y.cod, y.dmg);
+        }
         hits++;
     }
-    printf("\n\t----RESULT----\n");
+    if (terminal == 1){
+        printf("\n\t----RESULT----\n");
+    }
     if(x.dmg > 0){
-        printf("unit %c won\n\n", x.cod);
+        if (terminal == 1){
+            printf("unit %c won\n\n", x.cod);
+        }
         return 0;
     }
     else{
-        printf("unit %c won\n\n", y.cod);
+        if (terminal == 1){
+            printf("unit %c won\n\n", y.cod);
+        }
         return 1;
     }
 }
